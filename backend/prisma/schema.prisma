@@ -69,6 +69,9 @@ model Game {
   publisher   String?
   releaseDate DateTime?
   isActive    Boolean   @default(true)
+  accentColor String  @default("#22D3EE")
+  bannerUrl   String?
+  isFeatured  Boolean @default(false)
 
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])

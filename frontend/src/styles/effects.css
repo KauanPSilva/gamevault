@@ -1,0 +1,61 @@
+.ambient-glow {
+  background-image: radial-gradient(
+    ellipse at 50% 0%,
+    color-mix(in srgb, var(--game-accent) 14%, transparent),
+    transparent 65%
+  );
+}
+
+.accent-text {
+  color: var(--game-accent);
+}
+
+.accent-border {
+  border-color: var(--game-accent);
+}
+
+.accent-button {
+  background-color: var(--game-accent);
+  color: var(--color-background);
+
+  transition:
+    box-shadow 300ms ease,
+    transform 200ms ease;
+}
+
+.accent-button:hover:not(:disabled) {
+  box-shadow: 0 0 24px
+    color-mix(in srgb, var(--game-accent) 35%, transparent);
+}
+
+.accent-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.accent-glow {
+  box-shadow:
+    0 0 40px
+      color-mix(in srgb, var(--game-accent) 20%, transparent),
+    0 0 80px
+      color-mix(in srgb, var(--game-accent) 8%, transparent);
+}
+
+.game-card {
+  transition:
+    transform 300ms ease,
+    box-shadow 300ms ease,
+    border-color 300ms ease;
+}
+
+.game-card:hover {
+  transform: translateY(-4px);
+
+  border-color: color-mix(
+    in srgb,
+    var(--game-accent) 65%,
+    transparent
+  );
+
+  box-shadow: 0 8px 32px
+    color-mix(in srgb, var(--game-accent) 15%, transparent);
+}
