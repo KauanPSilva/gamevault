@@ -1,0 +1,169 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Enums
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+  FAILED
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  APPROVED
+  FAILED
+  CANCELLED
+  EXPIRED
+  REFUNDED
+}
+
+// Models
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         UserRole @default(CUSTOMER)
+
+  orders  Order[]
+  library LibraryItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id   String @id @default(uuid())
+  name String @unique
+  slug String @unique
+
+  games Game[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Game {
+  id          String    @id @default(uuid())
+  title       String
+  slug        String    @unique
+  description String
+  price       Int
+  imageUrl    String
+  developer   String?
+  publisher   String?
+  releaseDate DateTime?
+  isActive    Boolean   @default(true)
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  orderItems OrderItem[]
+  library    LibraryItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  status      OrderStatus @default(PENDING)
+  totalAmount Int
+  currency    String      @default("BRL")
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  items    OrderItem[]
+  payments Payment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([status])
+}
+
+model OrderItem {
+  id        String @id @default(uuid())
+  unitPrice Int
+
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id])
+
+  gameId String
+  game   Game   @relation(fields: [gameId], references: [id])
+
+  @@unique([orderId, gameId])
+  @@index([gameId])
+}
+
+model PaymentGateway {
+  id          String  @id @default(uuid())
+  name        String
+  code        String  @unique
+  description String?
+  isActive    Boolean @default(false)
+
+  payments Payment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Payment {
+  id             String        @id @default(uuid())
+  externalId     String?
+  idempotencyKey String        @unique
+  amount         Int
+  currency       String        @default("BRL")
+  status         PaymentStatus @default(PENDING)
+  paymentMethod  String?
+  failureReason  String?
+  paidAt         DateTime?
+
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id])
+
+  gatewayId String
+  gateway   PaymentGateway @relation(fields: [gatewayId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([gatewayId, externalId])
+  @@index([orderId])
+  @@index([status])
+}
+
+model LibraryItem {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  gameId String
+  game   Game   @relation(fields: [gameId], references: [id])
+
+  acquiredAt DateTime @default(now())
+
+  @@unique([userId, gameId])
+  @@index([gameId])
+}
