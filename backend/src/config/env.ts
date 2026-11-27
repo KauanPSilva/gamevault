@@ -20,7 +20,7 @@ const envSchema = z.object({
   DATABASE_URL: z.url(),
 
   JUNTOS_SE_FAZ_BASE_URL: z.url().default(
-  'https://www.juntosefaz.com.br/gateway/api/v1'
+    'https://www.juntosefaz.com.br/gateway/api/v1'
   ),
 
   JUNTOS_SE_FAZ_API_TOKEN: z.string().trim().min(1).optional(),
@@ -31,6 +31,18 @@ const envSchema = z.object({
     .min(1000)
     .max(30000)
     .default(10000),
+
+  JWT_SECRET: z.string().regex(
+    /^[a-fA-F0-9]{64}$/,
+    'JWT_SECRET must contain 64 hexadecimal characters'
+  ),
+
+  JWT_EXPIRES_IN_SECONDS: z.coerce
+    .number()
+    .int()
+    .min(300)
+    .max(86400)
+    .default(3600),
 });
 
 

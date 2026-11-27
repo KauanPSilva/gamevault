@@ -94,3 +94,60 @@ do backend aprovados.
 A persistência dos pagamentos, as regras de negócio
 do checkout e a autorização das operações de simulação
 serão implementadas nas próximas etapas.
+
+
+## Sprint 3 — Authentication and Authorization
+
+### Objetivo
+
+Implementar um sistema de autenticação e autorização para clientes e administradores, garantindo a proteção das credenciais, dos endpoints privados e dos futuros recursos administrativos da plataforma.
+
+### Utilização de inteligência artificial
+
+A ferramenta ChatGPT foi utilizada como apoio nas seguintes atividades:
+
+- Planejamento da arquitetura do módulo de autenticação.
+- Implementação dos schemas de cadastro e login utilizando Zod.
+- Estruturação do User Repository, Auth Service e Auth Controller.
+- Implementação do armazenamento seguro de senhas utilizando Argon2id.
+- Geração e validação de tokens JWT.
+- Implementação dos middlewares de autenticação e autorização baseada em papéis (RBAC).
+- Configuração de rate limiting nos endpoints de cadastro e login.
+- Elaboração de testes unitários e de integração.
+- Diagnóstico e correção de problemas de tipagem e inicialização do servidor HTTP durante os testes.
+
+### Decisões técnicas
+
+- Senhas armazenadas exclusivamente como hashes Argon2id.
+- Tokens JWT assinados utilizando HS256, com expiração, emissor e destinatário definidos.
+- Cadastro público restrito ao perfil CUSTOMER.
+- Consulta das permissões atuais do usuário no banco de dados durante a autenticação.
+- Validação estrita dos dados recebidos pela API.
+- Respostas de autenticação sem exposição de senhas ou hashes.
+- Limitação de requisições para reduzir tentativas abusivas de autenticação.
+- Utilização de registros exclusivos e limpeza dos dados criados pelos testes de integração.
+
+### Validação humana
+
+As implementações sugeridas pela IA foram aplicadas, executadas e verificadas localmente pelo desenvolvedor.
+
+Foram realizadas as seguintes validações:
+
+- 11 cenários manuais utilizando Postman, com verificação do conteúdo das respostas.
+- 30 testes automatizados de validação de schemas.
+- 10 testes automatizados de criptografia e verificação de senhas.
+- 17 testes automatizados de geração e validação JWT.
+- 11 testes unitários de autorização RBAC.
+- 15 testes de integração dos endpoints de autenticação.
+- 7 testes de integração de autorização com PostgreSQL.
+- Verificação de tipos do código de produção com TypeScript.
+- Compilação completa do backend.
+- Execução da suíte completa, totalizando 138 testes aprovados.
+
+### Limitações e melhorias futuras
+
+- O rate limiting utiliza armazenamento em memória, adequado ao ambiente atual de instância única.
+- Os testes de integração utilizam o banco de desenvolvimento com registros isolados e limpeza específica.
+- A autenticação ainda deverá ser integrada à interface frontend.
+- A criação controlada de contas administrativas será implementada posteriormente.
+- A verificação automatizada de tipos ainda não inclui os arquivos de testes.
