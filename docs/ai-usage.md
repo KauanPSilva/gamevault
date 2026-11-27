@@ -151,3 +151,80 @@ Foram realizadas as seguintes validações:
 - A autenticação ainda deverá ser integrada à interface frontend.
 - A criação controlada de contas administrativas será implementada posteriormente.
 - A verificação automatizada de tipos ainda não inclui os arquivos de testes.
+
+## Sprint 4 — Catálogo de jogos e interface da loja
+
+### Ferramenta utilizada
+
+- ChatGPT (OpenAI).
+
+### Objetivo da utilização
+
+Auxiliar no planejamento, desenvolvimento, revisão e validação do catálogo de jogos, da interface responsiva da loja e da integração entre frontend e backend.
+
+### Etapas e funcionalidades auxiliadas pela IA
+
+**Backend**
+
+- Evolução da modelagem de dados para suportar banners, cores temáticas e jogos em destaque.
+- Criação de migrations com Prisma.
+- Implementação de seeds idempotentes com 20 jogos e 6 categorias.
+- Estruturação dos módulos de jogos e categorias.
+- Implementação das camadas de repository, service, controller e routes.
+- Validação dos parâmetros de consulta utilizando Zod.
+- Implementação de pesquisa, filtros, ordenação e paginação.
+- Padronização das respostas e tratamento de erros.
+- Elaboração de testes unitários e de integração.
+
+**Frontend**
+
+- Organização da arquitetura de componentes, páginas, hooks, contextos e serviços.
+- Definição da identidade visual e do sistema de design da GameVault.
+- Configuração da comunicação com a API utilizando Axios.
+- Gerenciamento de dados assíncronos e cache com TanStack Query.
+- Implementação do layout responsivo e da navegação.
+- Desenvolvimento do carrossel de jogos em destaque.
+- Implementação de um sistema de temas dinâmicos baseado na identidade visual de cada jogo.
+- Desenvolvimento dos cards, filtros, pesquisa com debounce e paginação.
+- Implementação da página de detalhes dos jogos.
+- Tratamento de estados de carregamento, resultados vazios, falhas de comunicação e recursos inexistentes.
+- Orientação sobre otimização de imagens utilizando WebP.
+- Elaboração de testes automatizados com Vitest e React Testing Library.
+
+### Revisão e validação humana
+
+As sugestões e os trechos de código fornecidos pela IA foram implementados, executados e validados pelo desenvolvedor em ambiente local.
+
+As validações realizadas incluíram:
+
+- Execução das migrations e verificação da estrutura do PostgreSQL.
+- Execução repetida do seed para verificar sua idempotência.
+- Testes manuais dos endpoints utilizando Postman.
+- Verificação da integração entre frontend e backend.
+- Testes de navegação, pesquisa, filtros, ordenação e paginação.
+- Validação visual do tema dinâmico.
+- Verificação da responsividade utilizando as ferramentas de desenvolvimento do navegador.
+- Identificação e correção de problemas de interface.
+- Correção de um teste assíncrono relacionado à atualização do tema utilizando `waitFor`.
+- Execução das verificações de tipagem, compilação e lint.
+- Execução das suítes completas de testes automatizados.
+
+### Resultados da validação
+
+| Validação | Resultado |
+|---|---|
+| Testes automatizados do backend | 219 aprovados |
+| Testes automatizados do frontend | 83 aprovados |
+| Total de testes automatizados | 302 aprovados |
+| Typecheck do backend | Aprovado |
+| Build do backend | Aprovado |
+| Build do frontend | Aprovado |
+| Lint do frontend | Aprovado |
+
+### Limitações e decisões técnicas
+
+- Os preços e produtos apresentados possuem finalidade demonstrativa.
+- O catálogo não representa uma operação comercial real de distribuição de jogos.
+- Os testes de componentes frontend utilizam respostas simuladas da API para garantir isolamento e previsibilidade.
+- O fluxo de compra e a integração do carrinho serão implementados na sprint seguinte.
+- Parte das imagens do catálogo permanece pendente de inclusão e verificação das condições de utilização.
