@@ -1,6 +1,5 @@
 import {
   ArrowLeft,
-  ShoppingCart,
   ShieldCheck,
   Gamepad2,
   Building2,
@@ -18,6 +17,8 @@ import { ErrorState } from '../components/ui/ErrorState';
 import { formatCurrency } from '../utils/currency';
 
 import { isAxiosError } from 'axios';
+
+import { AddToCartButton } from '../features/cart/components/AddToCartButton';
 
 export function GameDetailsPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -220,14 +221,7 @@ export function GameDetailsPage() {
               </p>
             </div>
 
-            <button
-              type="button"
-              disabled
-              className="accent-button flex w-full items-center justify-center gap-3 rounded-lg px-5 py-4 text-sm font-bold disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              <ShoppingCart size={20} />
-              Adicionar ao carrinho
-            </button>
+            <AddToCartButton game={game} />
 
             <div className="flex items-start gap-3 border-t border-border pt-5">
               <ShieldCheck

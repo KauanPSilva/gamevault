@@ -27,13 +27,16 @@ import {
 
 import { AxiosError } from 'axios';
 
+import type { AxiosResponse } from 'axios';
+
 import { GameDetailsPage } from '../../pages/GameDetailsPage';
 import { ThemeProvider } from '../../contexts/ThemeProvider';
+import { CartProvider } from '../../contexts/CartProvider';
+
 import { catalogService } from '../../features/catalog/catalog.service';
+import { cartStorage } from '../../services/cart-storage';
 
 import { gtaGame } from '../fixtures/games.fixture';
-
-import type { AxiosResponse } from 'axios';
 
 vi.mock('../../features/catalog/catalog.service', () => ({
   catalogService: {
@@ -54,16 +57,18 @@ function renderPage(slug = gtaGame.slug) {
   return render(
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <MemoryRouter
-          initialEntries={[`/games/${slug}`]}
-        >
-          <Routes>
-            <Route
-              path="/games/:slug"
-              element={<GameDetailsPage />}
-            />
-          </Routes>
-        </MemoryRouter>
+        <CartProvider>
+          <MemoryRouter
+            initialEntries={[`/games/${slug}`]}
+          >
+            <Routes>
+              <Route
+                path="/games/:slug"
+                element={<GameDetailsPage />}
+              />
+            </Routes>
+          </MemoryRouter>
+        </CartProvider>
       </ThemeProvider>
     </QueryClientProvider>,
   );
@@ -72,6 +77,8 @@ function renderPage(slug = gtaGame.slug) {
 describe('GameDetailsPage', () => {
   beforeEach(() => {
     vi.resetAllMocks();
+
+    cartStorage.clear();
 
     vi.mocked(
       catalogService.getGameBySlug,
@@ -164,20 +171,20 @@ describe('GameDetailsPage', () => {
   });
 
   it('should apply the game accent color', async () => {
-  renderPage();
+    renderPage();
 
-  await screen.findByRole('heading', {
-    name: gtaGame.title,
-  });
+    await screen.findByRole('heading', {
+      name: gtaGame.title,
+    });
 
-  await waitFor(() => {
-    expect(
-      document.documentElement.style.getPropertyValue(
-        '--game-accent',
-      ),
-    ).toBe(gtaGame.accentColor);
+    await waitFor(() => {
+      expect(
+        document.documentElement.style.getPropertyValue(
+          '--game-accent',
+        ),
+      ).toBe(gtaGame.accentColor);
+    });
   });
-});
 
   it('should provide a link back to the store', async () => {
     renderPage();
@@ -197,6 +204,58 @@ describe('GameDetailsPage', () => {
         /nenhuma cobrança real será realizada/i,
       ),
     ).toBeInTheDocument();
+  });
+
+  it('should display an enabled add to cart button', async () => {
+    renderPage();
+
+    expect(
+      await screen.findByRole('button', {
+        name: 'Adicionar ao carrinho',
+      }),
+    ).toBeEnabled();
+  });
+
+  it('should add the game to the cart', async () => {
+    const user = userEvent.setup();
+
+    renderPage();
+
+    await user.click(
+      await screen.findByRole('button', {
+        name: 'Adicionar ao carrinho',
+      }),
+    );
+
+    expect(
+      await screen.findByText(
+        'Adicionado ao carrinho',
+      ),
+    ).toBeInTheDocument();
+
+    expect(
+      screen.queryByRole('button', {
+        name: 'Adicionar ao carrinho',
+      }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('should provide a link to the cart after adding a game', async () => {
+    const user = userEvent.setup();
+
+    renderPage();
+
+    await user.click(
+      await screen.findByRole('button', {
+        name: 'Adicionar ao carrinho',
+      }),
+    );
+
+    expect(
+      await screen.findByRole('link', {
+        name: 'Ir para o carrinho',
+      }),
+    ).toHaveAttribute('href', '/cart');
   });
 
   it('should display an error when the request fails', async () => {
