@@ -18,6 +18,7 @@ import {
 } from './modules/payments/routes/payment.routes.js';
 
 import { libraryRouter } from './modules/library/routes/library.routes.js';
+import { adminRouter } from './modules/admin/routes/admin.routes.js';
 
 
 const app = express();
@@ -41,6 +42,7 @@ app.use('/orders', orderRouter);
 app.use('/payments', paymentRouter);
 app.use('/payment-gateways', paymentGatewayRouter);
 app.use('/library', libraryRouter);
+app.use('/admin', adminRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

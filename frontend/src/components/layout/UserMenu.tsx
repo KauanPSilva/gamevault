@@ -81,11 +81,13 @@ export function UserMenu() {
 
   function handleLogout() {
     setIsOpen(false);
-    logout();
 
     navigate('/', {
       replace: true,
+      state: null,
     });
+
+    logout();
   }
 
   if (isLoading) {

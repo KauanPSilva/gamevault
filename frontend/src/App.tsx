@@ -17,6 +17,8 @@ import { CheckoutPage } from './pages/CheckoutPage';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { LibraryPage } from './pages/LibraryPage';
 import { OrdersPage } from './pages/OrdersPage';
+import { AdminDashboardPage } from './pages/AdminDashboardPage';
+import { AdminRoute } from './components/auth/AdminRoute';
 
 
 function App() {
@@ -43,6 +45,12 @@ function App() {
               <Route path="checkout" element={<CheckoutPage />} />
               <Route path="library" element={<LibraryPage />} />
               <Route path="orders" element={<OrdersPage />} />
+              <Route element={<AdminRoute />}>
+                <Route
+                  path="admin"
+                  element={<AdminDashboardPage />}
+                />
+              </Route>
             </Route>
           </Route>
         </Routes>
