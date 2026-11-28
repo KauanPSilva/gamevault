@@ -383,3 +383,48 @@ de pedidos e identificação de jogos adquiridos.
   sem disponibilização de arquivos reais para download.
 - Todas as transações permanecem restritas ao ambiente sandbox.
 - A divisão do bundle frontend será aprimorada posteriormente.
+
+## Sprint 7 — Painel administrativo
+
+**Ferramenta de IA utilizada:** ChatGPT (OpenAI)
+
+### Desenvolvimento auxiliado por IA
+
+- Criação de um script CLI para configuração de contas administrativas.
+- Implementação do controle de acesso baseado em papéis (RBAC).
+- Desenvolvimento da API administrativa para listagem, ativação e desativação de gateways de pagamento.
+- Validação dos adaptadores de pagamento implementados.
+- Desenvolvimento do painel administrativo e seus componentes responsivos.
+- Integração com React Query e gerenciamento de invalidação de cache.
+- Correção dos redirecionamentos de autenticação com base nas permissões do usuário.
+- Desenvolvimento de testes unitários, de integração, de componentes e de regressão.
+
+### Finalidade do uso de IA
+
+A IA foi utilizada para auxiliar na implementação das funcionalidades, avaliar decisões arquiteturais, identificar possíveis problemas de autenticação e autorização, melhorar a manutenibilidade do código e ampliar a cobertura de testes automatizados.
+
+### Revisão humana e validação
+
+O desenvolvedor implementou e revisou as alterações sugeridas, executou os testes automatizados localmente e realizou validações manuais dos seguintes fluxos:
+
+- Acesso ao painel administrativo.
+- Restrição de acesso para usuários sem permissões administrativas.
+- Ativação e desativação de gateways de pagamento.
+- Sincronização da disponibilidade dos gateways com o checkout.
+- Encerramento de sessão e alternância entre contas.
+- Redirecionamento após login e cadastro.
+
+### Resultados da validação
+
+- Backend: 394 testes aprovados em 22 arquivos.
+- Frontend: 348 testes aprovados em 26 arquivos.
+- Total: 742 testes automatizados aprovados.
+- Validação de tipos TypeScript do backend concluída sem erros.
+- Operações administrativas validadas utilizando PostgreSQL.
+
+### Limitações conhecidas
+
+- A integração de novos gateways de pagamento exige a implementação do respectivo adaptador no backend.
+- O indicador de integração implementada não representa a disponibilidade do provedor em tempo real.
+- O fluxo completo de logout e alternância entre contas foi validado manualmente, enquanto as regras de redirecionamento possuem cobertura automatizada.
+- Os testes de integração ainda utilizam o banco de dados local de desenvolvimento. O isolamento em um banco exclusivo para testes está previsto para o Sprint 8.

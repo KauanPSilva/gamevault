@@ -4,7 +4,6 @@ import {
   Link,
   Navigate,
   useLocation,
-  useNavigate,
 } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
@@ -33,12 +32,19 @@ import { getApiErrorMessage } from '../utils/api-error';
 import { getAuthRedirect } from '../utils/auth-redirect';
 
 export function LoginPage() {
-  const { login, isAuthenticated, isLoading } = useAuth();
+  const {
+    login,
+    isAuthenticated,
+    isLoading,
+    isAdmin,
+  } = useAuth();
 
-  const navigate = useNavigate();
   const location = useLocation();
 
-  const destination = getAuthRedirect(location.state);
+  const destination = getAuthRedirect(
+    location.state,
+    isAuthenticated ? isAdmin : undefined,
+  );
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -67,10 +73,6 @@ export function LoginPage() {
 
     try {
       await login(data);
-
-      navigate(destination, {
-        replace: true,
-      });
     } catch (error) {
       setServerError(
         getApiErrorMessage(

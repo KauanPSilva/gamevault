@@ -1,4 +1,7 @@
-export function getAuthRedirect(state: unknown): string {
+export function getAuthRedirect(
+  state: unknown,
+  isAdmin?: boolean,
+): string {
   if (
     typeof state !== 'object' ||
     state === null ||
@@ -43,6 +46,20 @@ export function getAuthRedirect(state: unknown): string {
     if (
       ['/login', '/register'].includes(
         url.pathname.replace(/\/+$/, '').toLowerCase(),
+      )
+    ) {
+      return '/';
+    }
+
+    const normalizedPath = url.pathname
+      .replace(/\/+$/, '')
+      .toLowerCase();
+
+    if (
+      isAdmin === false &&
+      (
+        normalizedPath === '/admin' ||
+        normalizedPath.startsWith('/admin/')
       )
     ) {
       return '/';

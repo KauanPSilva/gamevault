@@ -44,3 +44,101 @@ describe('getAuthRedirect', () => {
     expect(getAuthRedirect({ from })).toBe('/');
   });
 });
+
+describe('Role-based authentication redirects', () => {
+  it.each([
+    '/admin',
+    '/admin/',
+    '/ADMIN',
+    '/Admin',
+    '/admin?tab=gateways',
+    '/admin#gateways',
+    '/admin/payment-gateways',
+    '/admin/payment-gateways?active=true',
+    '/store/../admin',
+  ])(
+    'should redirect customers away from %s',
+    (destination) => {
+      expect(
+        getAuthRedirect(
+          { from: destination },
+          false,
+        ),
+      ).toBe('/');
+    },
+  );
+
+  it.each([
+    '/admin',
+    '/admin/',
+    '/admin?tab=gateways',
+    '/admin#gateways',
+    '/admin/payment-gateways',
+  ])(
+    'should preserve administrative destination %s for admins',
+    (destination) => {
+      expect(
+        getAuthRedirect(
+          { from: destination },
+          true,
+        ),
+      ).toBe(destination);
+    },
+  );
+
+  it.each([
+    '/',
+    '/checkout',
+    '/checkout?orderId=test-order',
+    '/library',
+    '/orders',
+    '/games/cyberpunk-2077',
+  ])(
+    'should preserve customer destination %s',
+    (destination) => {
+      expect(
+        getAuthRedirect(
+          { from: destination },
+          false,
+        ),
+      ).toBe(destination);
+    },
+  );
+
+  it('should preserve the destination before authentication', () => {
+    expect(
+      getAuthRedirect({
+        from: '/admin',
+      }),
+    ).toBe('/admin');
+  });
+
+  it('should reject external destinations even for administrators', () => {
+    expect(
+      getAuthRedirect(
+        {
+          from: 'https://example.com/admin',
+        },
+        true,
+      ),
+    ).toBe('/');
+  });
+
+  it('should reject authentication loops for administrators', () => {
+    expect(
+      getAuthRedirect(
+        { from: '/login' },
+        true,
+      ),
+    ).toBe('/');
+  });
+
+  it('should reject authentication loops for customers', () => {
+    expect(
+      getAuthRedirect(
+        { from: '/register' },
+        false,
+      ),
+    ).toBe('/');
+  });
+});

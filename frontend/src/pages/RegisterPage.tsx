@@ -4,7 +4,6 @@ import {
   Link,
   Navigate,
   useLocation,
-  useNavigate,
 } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
@@ -37,12 +36,15 @@ export function RegisterPage() {
     register: registerAccount,
     isAuthenticated,
     isLoading,
+    isAdmin,
   } = useAuth();
 
-  const navigate = useNavigate();
   const location = useLocation();
 
-  const destination = getAuthRedirect(location.state);
+  const destination = getAuthRedirect(
+    location.state,
+    isAuthenticated ? isAdmin : undefined,
+  );
 
   const [serverError, setServerError] = useState<
     string | null
@@ -74,10 +76,6 @@ export function RegisterPage() {
         name: data.name,
         email: data.email,
         password: data.password,
-      });
-
-      navigate(destination, {
-        replace: true,
       });
     } catch (error) {
       setServerError(
