@@ -32,6 +32,7 @@ import type { AxiosResponse } from 'axios';
 import { GameDetailsPage } from '../../pages/GameDetailsPage';
 import { ThemeProvider } from '../../contexts/ThemeProvider';
 import { CartProvider } from '../../contexts/CartProvider';
+import { AuthProvider } from '../../contexts/AuthProvider';
 
 import { catalogService } from '../../features/catalog/catalog.service';
 import { cartStorage } from '../../services/cart-storage';
@@ -56,20 +57,22 @@ function renderPage(slug = gtaGame.slug) {
 
   return render(
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <CartProvider>
-          <MemoryRouter
-            initialEntries={[`/games/${slug}`]}
-          >
-            <Routes>
-              <Route
-                path="/games/:slug"
-                element={<GameDetailsPage />}
-              />
-            </Routes>
-          </MemoryRouter>
-        </CartProvider>
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider>
+          <CartProvider>
+            <MemoryRouter
+              initialEntries={[`/games/${slug}`]}
+            >
+              <Routes>
+                <Route
+                  path="/games/:slug"
+                  element={<GameDetailsPage />}
+                />
+              </Routes>
+            </MemoryRouter>
+          </CartProvider>
+        </ThemeProvider>
+      </AuthProvider>
     </QueryClientProvider>,
   );
 }

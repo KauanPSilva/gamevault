@@ -6,11 +6,17 @@ import { formatCurrency } from '../../utils/currency';
 
 import type { Game } from '../../types/game';
 
+import { useOwnedGames } from '../../features/library/library.hooks';
+import { OwnedGameBadge } from './OwnedGameBadge';
+
 interface GameCardProps {
   game: Game;
 }
 
 export function GameCard({ game }: GameCardProps) {
+  const { ownedGameIds } = useOwnedGames();
+  const isOwned = ownedGameIds.has(game.id);
+  
   return (
     <Link
       to={`/games/${game.slug}`}
@@ -22,6 +28,9 @@ export function GameCard({ game }: GameCardProps) {
           alt={game.title}
           className="aspect-[2/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
+        {isOwned && (
+          <OwnedGameBadge className="absolute bottom-3 left-3 z-10" />
+        )}
 
         <div
           aria-hidden="true"

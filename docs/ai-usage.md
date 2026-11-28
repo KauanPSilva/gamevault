@@ -330,3 +330,56 @@ para evitar dependência de serviços externos.
 - A interface ainda não identifica todos os jogos
   previamente adquiridos pelo usuário.
 - Nenhuma transação financeira real é realizada.
+
+## Sprint 6 — Biblioteca e histórico de compras
+
+### Ferramenta utilizada
+
+- ChatGPT (OpenAI).
+
+### Atividades auxiliadas por IA
+
+- Implementação da API da biblioteca do cliente.
+- Desenvolvimento da interface responsiva da biblioteca.
+- Implementação do histórico de pedidos com paginação.
+- Recuperação de pagamentos pendentes pelo histórico.
+- Identificação de jogos já adquiridos no catálogo.
+- Bloqueio de compras duplicadas na interface.
+- Remoção seletiva de jogos adquiridos do carrinho.
+- Criação e revisão de testes automatizados.
+- Correção de dependências de contexto nos testes React.
+- Correção de erros de tipagem do TypeScript.
+
+### Revisão e validação humana
+
+O desenvolvedor revisou os códigos sugeridos, realizou
+a integração das funcionalidades e executou testes
+automatizados e validações manuais no navegador.
+
+Foram validados os fluxos de recuperação de pagamentos,
+aprovação simulada, atualização da biblioteca, histórico
+de pedidos e identificação de jogos adquiridos.
+
+### Resultados dos testes
+
+- Backend: 352 testes aprovados.
+- Frontend: 284 testes aprovados.
+- Total acumulado: 636 testes automatizados.
+
+### Decisões técnicas
+
+- A biblioteca é consultada com base no usuário autenticado.
+- O backend permanece responsável por impedir compras duplicadas.
+- A interface identifica jogos adquiridos e impede novas compras.
+- Jogos adquiridos permanecem disponíveis na biblioteca mesmo
+  quando desativados no catálogo.
+- Pagamentos pendentes podem ser recuperados pelo histórico.
+- O carrinho não remove jogos adquiridos automaticamente,
+  permitindo que o usuário confirme sua remoção.
+
+### Limitações conhecidas
+
+- A biblioteca representa licenças digitais fictícias,
+  sem disponibilização de arquivos reais para download.
+- Todas as transações permanecem restritas ao ambiente sandbox.
+- A divisão do bundle frontend será aprimorada posteriormente.

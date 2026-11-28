@@ -14,11 +14,29 @@ import { gtaGame } from '../fixtures/games.fixture';
 
 import type { Game } from '../../types/game';
 
+import { AuthProvider } from '../../contexts/AuthProvider';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+
 function renderCard(game: Game = gtaGame) {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        gcTime: Infinity,
+      },
+    },
+  });
   return render(
-    <MemoryRouter>
-      <GameCard game={game} />
-    </MemoryRouter>,
+  <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <MemoryRouter>
+          <GameCard game={game} />
+        </MemoryRouter>
+      </AuthProvider>
+    </QueryClientProvider>,
   );
 }
 
