@@ -15,6 +15,7 @@ import {
 import userEvent from '@testing-library/user-event';
 
 import { MemoryRouter } from 'react-router-dom';
+import { AuthProvider } from '../../contexts/AuthProvider';
 
 import {
   QueryClient,
@@ -69,9 +70,11 @@ function renderCatalog() {
 
   return render(
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter>
-        <CatalogSection />
-      </MemoryRouter>
+      <AuthProvider>
+        <MemoryRouter>
+          <CatalogSection />
+        </MemoryRouter>
+      </AuthProvider>
     </QueryClientProvider>,
   );
 }

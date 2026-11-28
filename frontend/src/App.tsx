@@ -15,6 +15,8 @@ import { RegisterPage } from './pages/RegisterPage';
 import { CartPage } from './pages/CartPage';
 import { CheckoutPage } from './pages/CheckoutPage';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import { LibraryPage } from './pages/LibraryPage';
+import { OrdersPage } from './pages/OrdersPage';
 
 
 function App() {
@@ -38,10 +40,9 @@ function App() {
             <Route path="register" element={<RegisterPage />} />
             <Route path="cart" element={<CartPage />} />
             <Route element={<ProtectedRoute />}>
-              <Route
-                path="checkout"
-                element={<CheckoutPage />}
-              />
+              <Route path="checkout" element={<CheckoutPage />} />
+              <Route path="library" element={<LibraryPage />} />
+              <Route path="orders" element={<OrdersPage />} />
             </Route>
           </Route>
         </Routes>
