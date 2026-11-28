@@ -228,3 +228,105 @@ As validações realizadas incluíram:
 - Os testes de componentes frontend utilizam respostas simuladas da API para garantir isolamento e previsibilidade.
 - O fluxo de compra e a integração do carrinho serão implementados na sprint seguinte.
 - Parte das imagens do catálogo permanece pendente de inclusão e verificação das condições de utilização.
+
+## Sprint 5 — Authentication, Cart and Checkout
+
+### Ferramenta utilizada
+
+- ChatGPT (OpenAI).
+
+### Objetivos do uso de IA
+
+- Planejamento da arquitetura do checkout.
+- Auxílio na implementação de funcionalidades.
+- Revisão de código e segurança.
+- Identificação de possíveis condições de corrida.
+- Elaboração de testes automatizados.
+- Diagnóstico e correção de erros.
+
+### Funcionalidades desenvolvidas com auxílio de IA
+
+#### Frontend
+
+- Autenticação e gerenciamento de sessão.
+- Formulários de cadastro e login.
+- Proteção de rotas por autenticação e perfil.
+- Carrinho persistente no navegador.
+- Checkout responsivo em múltiplas etapas.
+- Seleção de gateways de pagamento.
+- Exibição de pagamentos PIX simulados.
+- Simulação de aprovação, recusa e cancelamento.
+- Consulta externa ao gateway.
+- Recuperação de pedidos e pagamentos pela URL.
+- Confirmação visual de transações.
+
+#### Backend
+
+- Criação e persistência de pedidos.
+- Validação de preços no servidor.
+- Verificação de propriedade dos jogos.
+- Prevenção de compras duplicadas.
+- Persistência de pagamentos.
+- Controle de idempotência.
+- Controle de concorrência nas transações.
+- Integração com a Juntos Se Faz em sandbox.
+- Atualização transacional de pedidos e pagamentos.
+- Liberação de jogos após aprovação.
+- Consulta de status diretamente no gateway.
+- Tratamento de erros e respostas incertas.
+
+### Revisão e validação humana
+
+O desenvolvedor participou das decisões de arquitetura,
+implementação, execução, revisão e correção do código.
+
+Foram realizados testes manuais pelo navegador,
+Postman e consultas ao PostgreSQL.
+
+A integração com a Juntos Se Faz foi validada
+utilizando o ambiente sandbox, sem movimentação
+de dinheiro real.
+
+Foram implementados testes automatizados utilizando
+Vitest, Supertest e React Testing Library.
+
+Ao final do sprint, foram registrados:
+
+- Backend: 346 testes aprovados.
+- Frontend: 240 testes aprovados.
+- Total acumulado: 586 testes.
+
+Os testes automatizados de pagamento utilizam mocks
+para evitar dependência de serviços externos.
+
+### Decisões técnicas
+
+- O PostgreSQL é a fonte de verdade para o estado
+  persistido das transações simuladas.
+- Os preços enviados pelo navegador não são utilizados
+  como valores oficiais das compras.
+- A consulta externa ao gateway não sobrescreve
+  automaticamente o estado local do pagamento.
+- A recuperação do checkout utiliza o identificador
+  do pedido na URL e consultas autenticadas ao backend.
+- As credenciais do gateway permanecem exclusivamente
+  no backend.
+- Execução sequencial dos arquivos de testes do backend
+  para evitar conflitos entre transações concorrentes
+  no banco de dados compartilhado, preservando os
+  testes específicos de concorrência.
+
+### Limitações conhecidas
+
+- O gateway sandbox pode retornar estados demonstrativos
+  diferentes dos estados persistidos localmente.
+- A idempotência é controlada pela aplicação.
+- A chave de idempotência do frontend não é persistida
+  após o recarregamento da página.
+- Respostas incertas do gateway podem deixar pagamentos
+  em processamento, sem reconciliação automática.
+- Não há garantia de atomicidade entre o serviço
+  externo e o banco de dados local.
+- A interface ainda não identifica todos os jogos
+  previamente adquiridos pelo usuário.
+- Nenhuma transação financeira real é realizada.

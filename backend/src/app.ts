@@ -11,6 +11,11 @@ import healthRouter from './routes/health.routes.js';
 import { authRouter } from './modules/auth/routes/auth.routes.js';
 import { gameRouter } from './modules/games/routes/game.routes.js';
 import { categoryRouter } from './modules/categories/routes/category.routes.js';
+import { orderRouter } from './modules/orders/routes/order.routes.js';
+import {
+  paymentRouter,
+  paymentGatewayRouter,
+} from './modules/payments/routes/payment.routes.js';
 
 
 const app = express();
@@ -30,6 +35,9 @@ app.use('/health', healthRouter);
 app.use('/auth', authRouter);
 app.use('/games', gameRouter);
 app.use('/categories', categoryRouter);
+app.use('/orders', orderRouter);
+app.use('/payments', paymentRouter);
+app.use('/payment-gateways', paymentGatewayRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

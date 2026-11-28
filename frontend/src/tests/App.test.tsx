@@ -17,6 +17,10 @@ import {
 
 import App from '../App';
 
+import { AuthProvider } from '../contexts/AuthProvider';
+import { CartProvider } from '../contexts/CartProvider';
+
+
 vi.mock('../features/catalog/catalog.service', () => ({
   catalogService: {
     getGames: vi.fn().mockResolvedValue({
@@ -49,8 +53,12 @@ function renderApp() {
 
   return render(
     <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>,
+      <AuthProvider>
+        <CartProvider>
+          <App />
+        </CartProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 

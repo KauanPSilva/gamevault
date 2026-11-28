@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { UserMenu } from './UserMenu';
+import { useCart } from '../../hooks/useCart';
 
 import {
   Gamepad2,
@@ -26,6 +28,7 @@ const navigation = [
 ];
 
 export function Header() {
+  const { itemCount } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -75,21 +78,24 @@ export function Header() {
         <div className="hidden items-center gap-5 md:flex">
           <Link
             to="/cart"
-            aria-label="Carrinho"
-            className="text-text-muted transition-colors hover:text-text-primary"
+            aria-label={`Carrinho de compras: ${itemCount} itens`}
+            className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-border transition-colors hover:border-primary/50 hover:bg-surface-elevated"
           >
-            <ShoppingCart size={22} />
+            <ShoppingCart
+              size={22}
+              aria-hidden="true"
+            />
+
+            {itemCount > 0 && (
+              <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-xs font-bold text-background">
+                {itemCount}
+              </span>
+            )}
           </Link>
 
           <div className="h-7 w-px bg-white/10" />
 
-          <Link
-            to="/login"
-            className="accent-button flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold"
-          >
-            <UserRound size={17} />
-            Entrar
-          </Link>
+          <UserMenu />
         </div>
 
         {/* Mobile menu toggle */}
